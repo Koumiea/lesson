@@ -1,0 +1,116 @@
+
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <windows.h>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+    SetConsoleCP(65001);
+    SetConsoleOutputCP(65001);
+
+    string answer;
+
+    do
+    {
+        double x, eps;
+        int n;
+
+        cout << "ЗАВДАННЯ 1. ОБЧИСЛЕННЯ СУМИ РЯДУ" << endl;
+
+        cout << "Введіть x (0 < x < 1): ";
+        cin >> x;
+
+        while (x <= 0 || x >= 1)
+        {
+            cout << "Помилка! Введіть x у межах від 0 до 1: ";
+            cin >> x;
+        }
+
+        cout << "Введіть кількість членів ряду n: ";
+        cin >> n;
+
+        while (n < 1)
+        {
+            cout << "Помилка! n має бути не менше 1. Введіть n: ";
+            cin >> n;
+        }
+
+        cout << "Введіть точність епсилон: ";
+        cin >> eps;
+
+        while (eps <= 0)
+        {
+            cout << "Помилка! Епсилон має бути більшим за 0. Введіть ще раз: ";
+            cin >> eps;
+        }
+
+        // Обчислення суми за заданою кількістю членів
+        double term = x;
+        double sumN = term;
+
+        for (int k = 1; k < n; k++)
+        {
+            term = -term * x * x /
+                ((2.0 * k) * (2.0 * k + 1.0));
+
+            sumN += term;
+        }
+
+        // Обчислення суми із заданою точністю
+        term = x;
+        double sumEps = term;
+        int k = 1;
+
+
+        while (fabs(term)>eps)
+        {
+            term = -term * x * x /
+                ((2.0 * k) * (2.0 * k + 1.0));
+
+            sumEps += term;
+
+            k++;
+        }
+
+        // Контрольне значення
+        double control = sin(x);
+
+        cout << fixed << setprecision(12);
+
+        cout << endl;
+        cout << "Введене значення x: " << x << endl;
+        cout << "Кількість членів n: " << n << endl;
+        cout << "Точність епсилон: " << eps << endl;
+
+        cout << endl;
+        cout << "РЕЗУЛЬТАТИ ОБЧИСЛЕНЬ" << endl;
+
+        cout << "Сума за n членами: " << sumN << endl;
+        cout << "Сума з точністю епсилон: " << sumEps << endl;
+        cout << "Кількість використаних членів: " << k << endl;
+
+        cout << "Контрольне значення sin(x): "
+            << control << endl;
+
+        cout << "Похибка обчислення за n членами: "
+            << fabs(sumN - control) << endl;
+
+        cout << "Похибка обчислення з точністю епсилон: "
+            << fabs(sumEps - control) << endl;
+
+        cout << endl;
+        cout << "Повторити обчислення? (так/ні): ";
+        cin >> answer;
+
+        cout << endl;
+
+    } while (answer == "так" || answer == "Так");
+
+    cout << "Програму завершено." << endl;
+
+    return 0;
+}
